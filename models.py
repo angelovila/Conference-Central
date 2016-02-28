@@ -27,6 +27,7 @@ class Profile(ndb.Model):
     mainEmail = ndb.StringProperty()
     teeShirtSize = ndb.StringProperty(default='NOT_SPECIFIED')
     conferenceKeysToAttend = ndb.StringProperty(repeated=True)
+    sessionKeyToAttend = ndb.StringProperty(repeated=True)
 
 class ProfileMiniForm(messages.Message):
     """ProfileMiniForm -- update Profile form message"""
@@ -39,6 +40,7 @@ class ProfileForm(messages.Message):
     mainEmail = messages.StringField(2)
     teeShirtSize = messages.EnumField('TeeShirtSize', 3)
     conferenceKeysToAttend = messages.StringField(4, repeated=True)
+    sessionKeyToAttend = messages.StringField(5, repeated=True)
 
 class BooleanMessage(messages.Message):
     """BooleanMessage-- outbound Boolean value message"""
@@ -107,3 +109,39 @@ class ConferenceQueryForms(messages.Message):
 class StringMessage(messages.Message):
     """StringMessage-- outbound (single) string message"""
     data = messages.StringField(1, required=True)
+
+
+class Session(ndb.Model):
+    """Session -- Session object"""
+    name                   = ndb.StringProperty(required=True)
+    highlights             = ndb.StringProperty()
+    speaker                = ndb.StringProperty()
+    duration               = ndb.IntegerProperty()
+    typeOfSession          = ndb.StringProperty()
+    date                   = ndb.DateProperty()
+    #websafeConferenceKey   = ndb.StringProperty()  removed since conference is parent
+    #conferenceName         = ndb.StringProperty()  removed since conference is parent
+    startTime              = ndb.IntegerProperty()
+    endTime                = ndb.IntegerProperty() 
+    websafeKey             = ndb.StringProperty()
+
+
+class SessionForm(messages.Message):
+    """SessionForm"""
+    name                 = messages.StringField(1)
+    highlights           = messages.StringField(2)
+    speaker              = messages.StringField(3)
+    duration             = messages.IntegerField(4)
+    typeOfSession        = messages.StringField(5)
+    date                 = messages.StringField(6)
+    websafeConferenceKey = messages.StringField(7)
+    conferenceName       = messages.StringField(8)
+    websafeKey           = messages.StringField(9)
+    startTime            = messages.IntegerField(10)
+    endTime              = messages.IntegerField(11)
+
+
+class SessionForms(messages.Message):
+    """SessionForms"""
+    items = messages.MessageField(SessionForm, 1, repeated=True)
+
